@@ -8,39 +8,70 @@ Also code added to u-boot/cmd/tpm-v2.c, so that u-boot could read non volatile m
 
 Lets assume we have a working Raspberry Pi 3 B with Raspbian OS and a Infenion TPM slb9670 connected to SPI port.
 First we have add to conig.txt three commands
+
 dtparam=spi=on
+
 kernel=u-boot.bin
+
 dtoverlay=tpm-slb9670
+
 
 Then we must install the TPM framework, so that the OS can communicate with TPM.
 first we make an update and then install the dependecies
 sudo apt-get update 
+
 sudo apt-get upgrade 
+
 sudo apt-get –y install \
+
 autoconf-archive \ 
+
 libcmocka0 \ 
+
 libcmocka-dev \ 
+
 procps \ 
+
 iproute2 \ 
+
 build-essential \ 
+
 git \ 
+
 pkg-config \ 
+
 gcc \ 
+
 libtool \ 
+
 automake \ 
+
 libssl-dev \ 
+
 uthash-dev \ 
+
 autoconf \ 
+
 doxygen \ 
+
 libjson-c-dev \ 
+
 libini-config-dev \ 
+
 libcurl4-openssl-dev \
+
 U-boot sudo apt-get \
+
 uuid-dev \ 
+
 pandoc \ 
+
 bison \ 
+
 flex \ 
+
 libncurses-dev
+
 
 for the TPM framework
 git clone https://github.com/tpm2-software/tpm2-tss ~/tpm2-tss
