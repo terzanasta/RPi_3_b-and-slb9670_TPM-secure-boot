@@ -75,31 +75,54 @@ libncurses-dev
 
 for the TPM framework
 git clone https://github.com/tpm2-software/tpm2-tss ~/tpm2-tss
+
 cd ~/tpm2-tss 
+
 sudo ./bootstrap 
+
 sudo ./configure 
-sudo make -j$(nproc) 
+
+sudo make -j$(nproc)
+
 sudo make install 
+
 sudo ldconfig
+
 
 git clone https://github.com/tpm2-software/tpm2-tss-engine ~/tpm2-tss-engine
+
 cd ~/tpm2-tss-engine 
+
 sudo ./bootstrap 
+
 sudo ./configure 
+
 sudo make -j$(nproc) 
+
 sudo make install 
+
 sudo ldconfig
 
+
 git clone https://github.com/tpm2-software/tpm2-tools ~/tpm2-tools 
+
 cd ~/tpm2-tools 
+
 sudo ./bootstrap 
+
 sudo ./configure 
+
 sudo make -j$(nproc) 
+
 sudo make install 
+
 sudo ldconfig
+
 
 
 We compile the device tree for tpm the "tpm-slb9670.dts"
+
 dtc -@ -I dts -O dtb -o tpm-slb9670.dtbo tpm-slb9670.dts
+
 and finaly add the compiled file "tpm-slb9670.dtbo" to dtoverlay dir
 
