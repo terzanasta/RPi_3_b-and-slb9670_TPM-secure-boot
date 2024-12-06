@@ -7,7 +7,7 @@ So new code added to u-boot/arch/arm/dts/bcm2837-rpi-3-b.dts.
 Also code added to u-boot/cmd/tpm-v2.c, so that u-boot could read non volatile memmory of slb9670 during boot.
 
 Lets assume we have a working Raspberry Pi 3 B with Raspbian OS and a Infenion TPM slb9670 connected to SPI port.
-First we have add to conig.txt three commands
+First we have to add to conig.txt three commands
 
 dtparam=spi=on
 
@@ -17,7 +17,9 @@ dtoverlay=tpm-slb9670
 
 
 Then we must install the TPM framework, so that the OS can communicate with TPM.
+
 first we make an update and then install the dependecies
+
 sudo apt-get update 
 
 sudo apt-get upgrade 
@@ -74,6 +76,8 @@ libncurses-dev
 
 
 for the TPM framework
+
+
 git clone https://github.com/tpm2-software/tpm2-tss ~/tpm2-tss
 
 cd ~/tpm2-tss 
@@ -120,9 +124,98 @@ sudo ldconfig
 
 
 
+
 We compile the device tree for tpm the "tpm-slb9670.dts"
 
 dtc -@ -I dts -O dtb -o tpm-slb9670.dtbo tpm-slb9670.dts
 
-and finaly add the compiled file "tpm-slb9670.dtbo" to dtoverlay dir
+and finaly add the compiled file "tpm-slb9670.dtbo" to boot/dtoverlay dir
+
+
+We Reboot the RPi and check if TPM is working
+
+sudo tpm2 get_random   it should return a random number from TPM
+
+sudo tpm2 pcr_read   it should return the content of PCRs of TPM
+
+
+Install the u-boot
+
+git clone https://github.com/u-boot/u-boot ~/u-boot 
+
+cd ~/u-boot
+
+replace the ~/u-boot/arch/arm/dts/bcm2837-rpi-3-b.dts, with the one provided in this repository
+
+replace the ~/u-boot/cmd/tpm-v2.c, with the one provided in this repository
+
+
+We are ready to compile u-boot
+
+sudo make distclean 
+
+sudo make rpi_3_32b_defconfig 
+
+sudo make menuconfig
+
+
+Choose 
+
+
+Boot options 
+
+  [*] Enable preboot 
+
+  (pci enum; usb start; setenv bootdelay 5) preboot default value 
+
+
+Library routines -> Security support 
+
+  [*] Trusted Platform Module (TPM) Support
+
+
+Device Drivers -> [*] SPI Support 
+
+  [*] Enable Driver Model for SPI drivers 
+
+  [*] Soft SPI driver
+
+
+Device Drivers -> TPM support 
+
+  [*] TPMv2.x support 
+
+  [*] Enable support for TPMv2.x SPI chips 
+
+
+Command line interface -> Security commands 
+
+  [*] Support 'hash' command 
+
+  [*] Enable the 'tpm' command 
+
+
+
+Misc commands 
+
+  [*] gettime command
+
+  [*] timer command
+
+
+
+and finaly 
+
+sudo make all
+
+the file u-boot.bin is ceated and we have to copy it to boot dir
+
+sudo cp u-boot.bin /boot
+
+We reboot RPi and break the booting sequence of u-boot and try some TPM commands to verify communication between u-boot and TPM.
+
+try tpm2 init and then  tpm2 info, it should return info about TPM.
+  
+
+
 
