@@ -1,4 +1,4 @@
-//Βρίσκεται στην θέση ~/u-boot/arch/arm/dts/bcm2837-rpi-3-b.dts του Raspberry
+// ~/u-boot/arch/arm/dts/bcm2837-rpi-3-b.dts
 
 // SPDX-License-Identifier: GPL-2.0
 /dts-v1/;
