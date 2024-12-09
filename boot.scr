@@ -30,5 +30,5 @@ tpm2 pcr_read 23 0x31000000
 md.b 0x30000000 20
 md.b 0x31000000 20
 
-#compare memries if same
+#compare memories if same
 if cmp.b 0x30000000 0x31000000 20; then fatload mmc 0:1 ${kernel_addr_r} kernel7.img; timer get; sleep 5;bootz ${kernel_addr_r} - ${fdt_addr}; else echo "Kernel files modified"; fi
