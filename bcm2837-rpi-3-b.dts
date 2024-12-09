@@ -32,7 +32,7 @@
 		reset-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
 	};
 
-/* κώδικας για την επικοινωνία με TPM   */
+/* new code to communicaste with TPM   */
         
         aliases {
 		spi0 = &soft_spi;
@@ -66,7 +66,7 @@
        brcm,function = <0>;
    };
 
-/* τέλος κώδικας για την επικοινωνία με TPM  */
+/* End new code to communicaste with TPM  */
 
 };
 
