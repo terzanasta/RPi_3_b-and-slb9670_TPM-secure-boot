@@ -1,4 +1,5 @@
-# RPi_3_b-and-slb9670_TPM-secure-boot
+# RPi_3_b with slb9670 TPM, secure boot
+
 Secure Boot generally means to boot the OS only if kernel files are not modified by external reasons such as virus, bad actor etc…
 
 With a script we calculate the hash of kernel7.img and bcm2710-rpi-3-b.dtb and stores it to non volatile memory of TPM.
