@@ -6,27 +6,6 @@ tpm2 startup TPM2_SU_CLEAR
 # tpm2 get_capability 0x6 0x106 0x200 2
 
 timer get
-# Load Boot.scr script in Memory and compute Hash
-echo "======= Measuring Bootscript ==========="
-fatload mmc 0:1 0x30000000 boot.scr.uimg
-hash sha256 0x30000000 ${filesize} *0x31000000
-tpm2 pcr_extend 23 0x31000000
-
-timer get
-# Load tftp.scr script in Memory and compute Hash
-echo "======= Measuring recovery script ==========="
-fatload mmc 0:1 0x30000000 tftp.scr.uimg
-hash sha256 0x30000000 ${filesize} *0x31000000
-tpm2 pcr_extend 23 0x31000000
-
-timer get
-# Load BL in Memory and compute Hash
-echo "======= Measuring U-Boot Binary ==========="
-fatload mmc 0:1 0x30000000 u-boot.bin
-hash sha256 0x30000000 ${filesize} *0x31000000
-tpm2 pcr_extend 23 0x31000000
-
-timer get
 # Load KERNEL Image
 echo "======= Measuring KERNEL Image ==========="
 fatload mmc 0:1 0x30000000 kernel7.img
@@ -37,20 +16,6 @@ timer get
 # Load FDT-2710 Image
 echo "======= Measuring device tree ==========="
 fatload mmc 0:1 0x30000000 bcm2710-rpi-3-b.dtb
-hash sha256 0x30000000 ${filesize} *0x31000000
-tpm2 pcr_extend 23 0x31000000
-
-timer get
-# Load Config.txt
-echo "======= Measuring Config.txt ==========="
-fatload mmc 0:1 0x30000000 config.txt
-hash sha256 0x30000000 ${filesize} *0x31000000
-tpm2 pcr_extend 23 0x31000000
-
-timer get
-# Load tpm-slb9670.dtbo
-echo "======= Measuring tpm-slb9670.dtbo ==========="
-fatload mmc 0:1 0x30000000 overlays/tpm-slb9670.dtbo
 hash sha256 0x30000000 ${filesize} *0x31000000
 tpm2 pcr_extend 23 0x31000000
 
@@ -66,4 +31,4 @@ md.b 0x30000000 20
 md.b 0x31000000 20
 
 #compare memries if same
-if cmp.b 0x30000000 0x31000000 20; then fatload mmc 0:1 ${kernel_addr_r} kernel7.img; timer get; sleep 5;bootz ${kernel_addr_r} - ${fdt_addr}; else echo "Kernel files modified, recovering from tftp"; fatload mmc 0:1 0x31000000 tftp.scr.uimg; source 0x31000000; fi
+if cmp.b 0x30000000 0x31000000 20; then fatload mmc 0:1 ${kernel_addr_r} kernel7.img; timer get; sleep 5;bootz ${kernel_addr_r} - ${fdt_addr}; else echo "Kernel files modified"; fi
